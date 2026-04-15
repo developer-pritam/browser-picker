@@ -1,0 +1,48 @@
+# Xcode
+build/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+DerivedData/
+*.moved-aside
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+!default.pbxuser
+!default.mode1v3
+!default.mode2v3
+!default.perspectivev3
+
+# Generated Xcode project (regenerate with: xcodegen generate)
+BrowserPicker.xcodeproj/
+
+# Distribution output
+dist/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Logs & temp
+*.log
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Credentials / secrets
+*.p12
+*.mobileprovision
+ExportOptions.plist
