@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xcodebuild -version)",
+      "Bash(sw_vers)",
+      "Read(//Applications/**)",
+      "Read(//Users/pritam/Code/macapps/window-manager/**)",
+      "Bash(xcodegen generate:*)",
+      "Bash(xcodebuild -scheme BrowserPicker -configuration Debug build)",
+      "Bash(/System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Versions/Current/Support/lsregister -dump)",
+      "Read(//Users/pritam/Applications/**)",
+      "Bash(defaults read:*)",
+      "Bash(plutil -p \"/Applications/Hammerspoon.app/Contents/Info.plist\")",
+      "Bash(awk '/\\\\/Users\\\\/pritam\\\\/Applications\\\\/BrowserPicker/,/^-{10}/')",
+      "Bash(plutil -p ~/Applications/BrowserPicker.app/Contents/Info.plist)",
+      "Bash(xcodebuild -scheme BrowserPicker -configuration Debug clean build)",
+      "Read(//Users/pritam/Library/Developer/Xcode/DerivedData/**)"
+    ]
+  }
+}

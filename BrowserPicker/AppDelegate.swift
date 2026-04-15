@@ -2,6 +2,10 @@ import AppKit
 import Carbon
 import SwiftUI
 
+extension Notification.Name {
+    static let statusBarIconVisibilityChanged = Notification.Name("com.dp.BrowserPicker.statusBarIconVisibility")
+}
+
 // NSHostingView subclass that accepts first responder and handles keyboard directly
 private class PickerHostingView: NSHostingView<ContentView> {
     var onDismiss: (() -> Void)?
@@ -69,6 +73,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func finishLaunching() {
+        UserDefaults.standard.register(defaults: ["showStatusBarIcon": true])
+
         NSAppleEventManager.shared().setEventHandler(
             self,
             andSelector: #selector(handleGetURL(_:replyEvent:)),
@@ -82,7 +88,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // NSApp.windows includes the NSStatusItem's internal button window, so
         // calling this after setupStatusBar() would close it and break click handling.
         NSApp.windows.forEach { $0.close() }
-        setupStatusBar()
+        if UserDefaults.standard.bool(forKey: "showStatusBarIcon") {
+            setupStatusBar()
+        }
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateStatusBarVisibility),
+            name: .statusBarIconVisibilityChanged,
+            object: nil
+        )
 
         // Show welcome window on first ever launch
         let hasLaunchedBefore = UserDefaults.standard.bool(forKey: "hasLaunchedBefore")
@@ -90,6 +105,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 self.welcomeWindowController?.show()
+            }
+        }
+    }
+
+    @objc private func updateStatusBarVisibility() {
+        let show = UserDefaults.standard.bool(forKey: "showStatusBarIcon")
+        if show {
+            if statusItem == nil { setupStatusBar() }
+        } else {
+            if let item = statusItem {
+                NSStatusBar.system.removeStatusItem(item)
+                statusItem = nil
             }
         }
     }

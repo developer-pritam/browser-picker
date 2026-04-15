@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(chmod +x /Users/pritam/Code/macapps/browser-picker/scripts/build-release.sh)"
+    ]
+  }
+}

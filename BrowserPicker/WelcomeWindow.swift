@@ -53,6 +53,12 @@ struct WelcomeView: View {
     @ObservedObject private var manager = BrowserManager.shared
     @State private var isDefaultBrowser = false
     @State private var launchAtLogin = (SMAppService.mainApp.status == .enabled)
+    @State private var showStatusBarIcon: Bool = {
+        // Returns the registered default (true) if not yet set, or the user's saved value
+        UserDefaults.standard.object(forKey: "showStatusBarIcon") != nil
+            ? UserDefaults.standard.bool(forKey: "showStatusBarIcon")
+            : true
+    }()
     @State private var draggedBundleId: String?
     @State private var selectedTab: Tab = .browsers
 
@@ -210,6 +216,23 @@ struct WelcomeView: View {
                             } catch {
                                 launchAtLogin = (SMAppService.mainApp.status == .enabled)
                             }
+                        }
+                }
+
+                Divider().padding(.leading, 50)
+
+                PreferenceRow(
+                    icon: "menubar.rectangle",
+                    iconColor: .purple,
+                    title: "Show Status Bar Icon",
+                    description: "Display the globe icon in your menu bar for quick access to settings and browser selection."
+                ) {
+                    Toggle("", isOn: $showStatusBarIcon)
+                        .toggleStyle(.switch)
+                        .labelsHidden()
+                        .onChange(of: showStatusBarIcon) { _, enabled in
+                            UserDefaults.standard.set(enabled, forKey: "showStatusBarIcon")
+                            NotificationCenter.default.post(name: .statusBarIconVisibilityChanged, object: nil)
                         }
                 }
 
