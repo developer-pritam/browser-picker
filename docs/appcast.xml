@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"
+     xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"
+     xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>Browser Picker</title>
+        <link>https://browserpicker.developerpritam.in/appcast.xml</link>
+        <description>Browser Picker update feed</description>
+        <language>en</language>
+        <item>
+            <title>Browser Picker 1.0.2</title>
+            <sparkle:releaseNotesLink>https://github.com/developer-pritam/browser-picker/releases/tag/v1.0.2</sparkle:releaseNotesLink>
+            <pubDate>Thu, 16 Apr 2026 19:18:03 +0000</pubDate>
+            <enclosure
+                url="https://github.com/developer-pritam/browser-picker/releases/download/v1.0.2/BrowserPicker-1.0.2.zip"
+                sparkle:version="1.0.2"
+                sparkle:shortVersionString="1.0.2"
+                length="1892963"
+                type="application/octet-stream"
+                sparkle:edSignature="Iz2iTgqXQ32lr4xww0gFAg60p8XUIBSablXGrsFOh5PnOApjdttoyJ3NiE+TyYBoLOlTExbBvcOHXfj0mDstAQ=="/>
+        </item>
+    </channel>
+</rss>
