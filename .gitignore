@@ -46,3 +46,6 @@ build/
 *.p12
 *.mobileprovision
 ExportOptions.plist
+
+# Sparkle binary tools (downloaded on demand by build-release.sh)
+scripts/sparkle-tools/

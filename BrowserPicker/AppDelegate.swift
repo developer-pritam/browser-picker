@@ -1,5 +1,6 @@
 import AppKit
 import Carbon
+import Sparkle
 import SwiftUI
 
 extension Notification.Name {
@@ -42,6 +43,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var welcomeWindowController: WelcomeWindowController?
     private var statusItem: NSStatusItem?
     private let statusMenu = NSMenu()
+    private var updaterController: SPUStandardUpdaterController?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Terminate any old instances so their status bar icons are cleaned up before we add ours
@@ -82,6 +84,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             andEventID: AEEventID(kAEGetURL)
         )
         NSApp.setActivationPolicy(.accessory)
+        updaterController = SPUStandardUpdaterController(startingUpdater: true, updaterDelegate: nil, userDriverDelegate: nil)
         setupPanel()
         welcomeWindowController = WelcomeWindowController()
         // Close SwiftUI-generated windows BEFORE creating the status item —
@@ -260,6 +263,12 @@ extension AppDelegate: NSMenuDelegate {
         let settings = NSMenuItem(title: "Settings…", action: #selector(openSettings), keyEquivalent: "")
         settings.target = self
         menu.addItem(settings)
+
+        // Check for Updates
+        let checkUpdates = NSMenuItem(title: "Check for Updates…", action: #selector(SPUStandardUpdaterController.checkForUpdates(_:)), keyEquivalent: "")
+        checkUpdates.target = updaterController
+        menu.addItem(checkUpdates)
+
         menu.addItem(.separator())
 
         // Open links with — browser list

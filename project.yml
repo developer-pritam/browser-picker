@@ -6,6 +6,11 @@ options:
   xcodeVersion: "15"
   generateEmptyDirectories: true
 
+packages:
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle
+    from: 2.6.4
+
 targets:
   BrowserPicker:
     type: application
@@ -14,6 +19,9 @@ targets:
       - path: BrowserPicker
         excludes:
           - "**/*.md"
+    dependencies:
+      - package: Sparkle
+        product: Sparkle
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.dp.BrowserPicker
