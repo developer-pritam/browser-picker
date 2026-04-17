@@ -113,7 +113,8 @@ xcodebuild \
     -scheme "$SCHEME" \
     -configuration Release \
     CODE_SIGN_IDENTITY="-" \
-    CODE_SIGNING_REQUIRED=NO \
+    CODE_SIGNING_REQUIRED=YES \
+    CODE_SIGN_INJECT_BASE_ENTITLEMENTS=NO \
     CURRENT_PROJECT_VERSION="$VERSION" \
     MARKETING_VERSION="$VERSION" \
     build \
