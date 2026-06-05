@@ -224,11 +224,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     // MARK: - Apple Event
 
+    // Legacy delivery path: GetURL Apple Event (kInternetEventClass/kAEGetURL).
+    // Triggered by NSWorkspace.open(url) and most apps.
     @objc func handleGetURL(_ event: NSAppleEventDescriptor, replyEvent: NSAppleEventDescriptor) {
         guard
             let urlString = event.paramDescriptor(forKeyword: keyDirectObject)?.stringValue,
             let url = URL(string: urlString)
         else { return }
+        handleIncomingURL(url)
+    }
+
+    // Modern delivery path: some callers — notably the new macOS Spotlight and
+    // launchers that open a URL "with" a specific app — deliver via openURLs /
+    // openDocuments instead of the GetURL Apple Event. Without this, those links
+    // silently do nothing when Browser Picker is the default browser.
+    func application(_ application: NSApplication, open urls: [URL]) {
+        urls.forEach { handleIncomingURL($0) }
+    }
+
+    private func handleIncomingURL(_ url: URL) {
         DispatchQueue.main.async {
             let manager = BrowserManager.shared
             if let primary = manager.primaryBrowser {
