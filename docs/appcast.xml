@@ -10,14 +10,14 @@
         <item>
             <title>Browser Picker 1.0.5</title>
             <sparkle:releaseNotesLink>https://github.com/developer-pritam/browser-picker/releases/tag/v1.0.5</sparkle:releaseNotesLink>
-            <pubDate>Fri, 05 Jun 2026 13:22:08 +0000</pubDate>
+            <pubDate>Sat, 06 Jun 2026 07:16:08 +0000</pubDate>
             <enclosure
                 url="https://github.com/developer-pritam/browser-picker/releases/download/v1.0.5/BrowserPicker-1.0.5.zip"
                 sparkle:version="1.0.5"
                 sparkle:shortVersionString="1.0.5"
-                length="1943902"
+                length="1943936"
                 type="application/octet-stream"
-                sparkle:edSignature="AcuhrJeYYZVBq3L1ylLHlrFa80JldpdZd3z5KftUgZBbTsNxlBBcFsLV4T1v0FUBaKEVvbLhbdU2xy7w4sVoAQ=="/>
+                sparkle:edSignature="Y3UeLiBKlNBvM9VcPNxZq19qRMBBVBlirajeS6mZQUWcCfQlTv+EDKzaHtgywofaNBfWt/A7813dLixM3QBmDg=="/>
         </item>
     </channel>
 </rss>
