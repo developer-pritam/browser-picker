@@ -4,5 +4,12 @@
 <dict>
     <key>com.apple.security.app-sandbox</key>
     <false/>
+    <!-- Required because the app is ad-hoc signed (no Developer ID Team) while
+         the embedded Sparkle.framework is separately ad-hoc signed. With the
+         hardened runtime, library validation otherwise rejects the framework
+         ("different Team IDs") and the app crashes on launch — which macOS 26
+         enforces strictly. -->
+    <key>com.apple.security.cs.disable-library-validation</key>
+    <true/>
 </dict>
 </plist>
