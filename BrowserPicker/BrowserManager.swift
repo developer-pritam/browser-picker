@@ -53,10 +53,11 @@ final class BrowserManager: ObservableObject {
     func refreshBrowsers() {
         guard let testURL = URL(string: "https://example.com") else { return }
 
-        let discovered: [Browser] = NSWorkspace.shared
+        let candidates: [Browser] = NSWorkspace.shared
             .urlsForApplications(toOpen: testURL)
             .compactMap { appURL in
                 guard
+                    !Self.isInToolCache(appURL),
                     let bundle = Bundle(url: appURL),
                     let bundleId = bundle.bundleIdentifier,
                     bundleId != Bundle.main.bundleIdentifier,
@@ -66,12 +67,24 @@ final class BrowserManager: ObservableObject {
                 return Browser(name: name, bundleId: bundleId, appURL: appURL)
             }
 
-        let saved = loadPrefs()
-        let savedIds = saved.map { $0.bundleId }
+        // Rows are keyed by bundle ID, so keep one copy of each app — preferring /Applications.
+        var discovered: [Browser] = []
+        for browser in candidates {
+            if let idx = discovered.firstIndex(where: { $0.bundleId == browser.bundleId }) {
+                if browser.appURL.path.hasPrefix("/Applications/") { discovered[idx] = browser }
+            } else {
+                discovered.append(browser)
+            }
+        }
 
-        // 1. Saved browsers in saved order (only if still installed)
+        let saved = loadPrefs()
+        var savedIds = Set<String>()
+
+        // 1. Saved browsers in saved order (only if still installed; older builds could save duplicates)
         var result: [ManagedBrowser] = saved.compactMap { pref in
-            guard let browser = discovered.first(where: { $0.bundleId == pref.bundleId })
+            guard
+                savedIds.insert(pref.bundleId).inserted,
+                let browser = discovered.first(where: { $0.bundleId == pref.bundleId })
             else { return nil }
             return ManagedBrowser(browser: browser, isHidden: pref.isHidden, isPrimary: pref.isPrimary)
         }
@@ -83,6 +96,16 @@ final class BrowserManager: ObservableObject {
 
         managedBrowsers = result
         selectedIndex = 0
+    }
+
+    /// Playwright, Puppeteer, npx and Xcode download or build app copies that register as
+    /// http handlers but aren't browsers anyone picks (e.g. ~/.cache/puppeteer/…/Google Chrome for Testing.app).
+    private static func isInToolCache(_ appURL: URL) -> Bool {
+        let path = appURL.path
+        return path.contains("/Library/Caches/")
+            || path.contains("/DerivedData/")
+            || path.contains("/node_modules/")
+            || appURL.pathComponents.contains { $0.hasPrefix(".") }
     }
 
     // MARK: - Management Actions
